@@ -3,8 +3,8 @@ import {Text, View, Button, StyleSheet, Pressable, Image} from 'react-native';
 import icons from '../staticData/icons';
 export default AddButton = props => {
   return (
-    <Pressable style={styles.container} onPress={props.action}>
-      <Image source={icons.add} style={styles.icon} />
+    <Pressable style={[styles.container,  props.styling]} onPress={props.action}>
+      <Image source={props.src} style={styles.icon} />
     </Pressable>
   );
 };

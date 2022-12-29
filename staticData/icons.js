@@ -14,5 +14,6 @@ const icons = {
   music: require('../assets/icons/acoustic-guitar.png'),
   menu: require('../assets/icons/drop-down-menu.png'),
   general: require('../assets/icons/general.png'),
+  error: require('../assets/icons/error.png'),
 };
 export default icons;

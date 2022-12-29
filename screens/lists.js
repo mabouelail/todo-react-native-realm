@@ -11,7 +11,8 @@ import {
 import AddButton from '../components/addButton';
 import icons from '../staticData/icons';
 import CategoryCard from '../components/categoryCard';
-import {useSelector} from 'react-redux';
+import TaskContext from '../realm/realmConfig';
+const {useQuery, useRealm} = TaskContext;
 const Header = () => {
   return (
     <View style={styles.header}>
@@ -20,8 +21,10 @@ const Header = () => {
     </View>
   );
 };
+
 export default Lists = ({navigation}) => {
-  const categories = useSelector(state => state.newTaskReducer.categories);
+  const categories = useQuery('Category');
+  const realm = useRealm();
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
@@ -30,16 +33,35 @@ export default Lists = ({navigation}) => {
         data={categories}
         renderItem={({item}) => (
           <CategoryCard
-            category={item}
-            action={() => navigation.navigate('CategoryDetails', item)}
+            category={{
+              categoryName: item.categoryName,
+              numOfTasks: item.numOfTasks,
+            }}
+            action={() =>
+              navigation.navigate('CategoryDetails', {
+                categoryName: item.categoryName,
+                numOfTasks: item.numOfTasks,
+              })
+            }
           />
         )}
         horizontal={false}
         numColumns={2}
         showsVerticalScrollIndicator={false}
       />
-
-      <AddButton action={() => navigation.navigate('NewTask')} />
+      <AddButton
+        src={icons.add}
+        action={() => navigation.navigate('NewTask')}
+      />
+      <AddButton
+        src={icons.error}
+        action={() => {
+          realm.write(() => {
+            realm.deleteAll();
+          });
+        }}
+        styling={{bottom: 30, left: 15}}
+      />
     </View>
   );
 };

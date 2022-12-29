@@ -8,50 +8,62 @@ import CategoryDetails from './screens/categoryDetails';
 import icons from './staticData/icons';
 import NewTask from './screens/newTask';
 import Test from './components/checkBox';
-import {Provider} from 'react-redux';
-import store from './redux/store';
-
+import TaskContext from './realm/realmConfig';
+const {RealmProvider} = TaskContext;
+function AppWrapper() {
+  return (
+    <RealmProvider>
+      <App />
+    </RealmProvider>
+  );
+}
 const App = () => {
   const Stack = createNativeStackNavigator();
   return (
-    <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Lists"
-            screenOptions={{
-              headerTransparent: true,
-              navigationBarHidden: true,
-            }}>
-            <Stack.Screen
-              name="Lists"
-              component={Lists}
-              options={{
-                title: '',
-                gestureDirection: 'vertical',
-              }}
-            />
-            <Stack.Screen
-              name="CategoryDetails"
-              component={CategoryDetails}
-              options={{
-                title: '',
-                headerTintColor: 'white',
-              }}
-            />
-            <Stack.Screen
-              name="NewTask"
-              component={NewTask}
-              options={{
-                title: '',
-                headerTintColor: 'black',
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-    </Provider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Lists"
+          screenOptions={{
+            headerTransparent: true,
+            navigationBarHidden: true,
+          }}>
+          <Stack.Screen
+            name="Lists"
+            component={Lists}
+            options={{
+              title: '',
+              gestureDirection: 'vertical',
+            }}
+          />
+          <Stack.Screen
+            name="CategoryDetails"
+            component={CategoryDetails}
+            options={{
+              title: '',
+              headerTintColor: 'white',
+            }}
+          />
+          <Stack.Screen
+            name="NewTask"
+            component={NewTask}
+            options={{
+              title: '',
+              headerTintColor: 'black',
+            }}
+          />
+          <Stack.Screen
+            name="TestScreen"
+            component={TestScreen}
+            options={{
+              title: '',
+              headerTintColor: 'black',
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 };
 
-export default App;
+export default AppWrapper;
 
 //#5886FE

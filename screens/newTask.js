@@ -8,10 +8,11 @@ import {
   KeyboardAvoidingView,
   Pressable,
   Image,
+  Alert,
 } from 'react-native';
 import icons from '../staticData/icons';
-import {createnewTask} from '../redux/tasks';
-import {useSelector, useDispatch} from 'react-redux';
+import TaskContext, {checkCategory} from '../realm/realmConfig';
+const {useRealm, useQuery, useObject} = TaskContext;
 const TaskInfoCard = props => {
   return (
     <View style={styles.containerInput}>
@@ -20,16 +21,18 @@ const TaskInfoCard = props => {
     </View>
   );
 };
-export default NewTask = () => {
+export default TestScreen = ({navigation}) => {
   const [firstInput, setFirstInput] = useState('');
   const [secondInput, setSecondInput] = useState('');
   const [thirdInput, setThirdInput] = useState('');
-  const dispatch = useDispatch();
+  const realm = useRealm();
+  const tasks = useQuery('Task');
+  const categories = useQuery('Category');
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FAF9F6" />
       <KeyboardAvoidingView behavior="height" style={styles.body}>
-        <Text style={styles.header}>New Task</Text>
+        <Text style={styles.header}>Test Screen</Text>
         <Text style={styles.question}>What are you Planning? 🙄</Text>
         <View style={styles.inputContainer}>
           <TextInput
@@ -57,18 +60,25 @@ export default NewTask = () => {
           </TaskInfoCard>
         </View>
         <Pressable
-          title="Create"
           style={styles.createButton}
           onPress={() => {
-            dispatch(
-              createnewTask({
-                content: firstInput,
-                note: secondInput,
-                category: thirdInput,
-              }),
-            );
+            if (thirdInput.trim()) {
+              realm.write(() => {
+                const t = realm.create('Task', {
+                  _id: new Realm.BSON.ObjectId(),
+                  task: firstInput,
+                  note: secondInput,
+                  category: thirdInput.toLowerCase().trim(),
+                  status: true
+                });
+                checkCategory(realm, t, categories);
+              });
+              navigation.navigate('Lists');
+            } else {
+              Alert.alert('empty category');
+            }
           }}>
-          <Text style={styles.buttonText}>Create</Text>
+          <Text style={styles.buttonText}>add</Text>
         </Pressable>
       </KeyboardAvoidingView>
     </View>

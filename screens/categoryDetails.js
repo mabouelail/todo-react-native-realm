@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   View,
@@ -13,24 +13,29 @@ import IconHolder from '../components/iconHolder';
 import TaskCard from '../components/taskCard';
 import icons from '../staticData/icons';
 import notes from '../staticData/note';
+import TaskContext from '../realm/realmConfig';
+const {useObject, useQuery} = TaskContext;
 
 export default CategoryDetails = ({route, navigation}) => {
-  const {categoryType, numberOfTasks, tasks} = route.params;
+  const {categoryName, numOfTasks} = route.params;
+  const categories = useQuery('Category');
+  const cat = categories.findIndex(item => item.categoryName === categoryName);
+  useEffect(() => {
+    console.log(cat);
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#5886FE" />
       <View style={styles.header}>
         <IconHolder src={icons.general} />
-        <Text style={styles.headerTitle}>{categoryType}</Text>
-        <Text style={styles.headerSubTitle}>{numberOfTasks} Tasks</Text>
+        <Text style={styles.headerTitle}>{categoryName}</Text>
+        <Text style={styles.headerSubTitle}>{numOfTasks} Tasks</Text>
       </View>
       <View style={styles.taskList}>
         <View style={styles.list}>
           <FlatList
-            data={tasks}
-            renderItem={({item}) => (
-              <TaskCard task={item.content} note={item.note} />
-            )}
+            data={categories[cat].tasks}
+            renderItem={({item}) => <TaskCard t={item} />}
             showsVerticalScrollIndicator={false}
           />
         </View>

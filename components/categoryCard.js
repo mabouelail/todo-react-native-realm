@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import icons from '../staticData/icons';
 export default CategoryCard = props => {
-  const category = props.category;
+  const {categoryName, numOfTasks} = props.category;
   const styles = useStyles(useWindowDimensions());
   return (
     <Pressable style={styles.container} onPress={props.action}>
       <Image source={icons.general} style={styles.icon} />
       <View>
-        <Text style={styles.categoryTitle}>{category.categoryType}</Text>
-        <Text>{category.numberOfTasks} Tasks</Text>
+        <Text style={styles.categoryTitle}>{categoryName}</Text>
+        <Text>{numOfTasks} Tasks</Text>
       </View>
     </Pressable>
   );

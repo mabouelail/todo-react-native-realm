@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     shadowColor: '#000',
     elevation: 5,
+    
   },
   icon: {
     width: 30,

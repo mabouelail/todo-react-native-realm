@@ -5,17 +5,23 @@ import CustomCheckBox from './checkBox';
 import CheckBox from '@react-native-community/checkbox';
 
 export default TaskCard = props => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [noteStatus, setNoteStatus] = useState(!props.t.status);
   return (
     <View style={styles.container}>
       <View style={styles.d}>
-        <Text style={styles.title}>{props.task}</Text>
-        <Text>{props.note}</Text>
+        <Text
+          style={[
+            styles.title,
+            {textDecorationLine: !noteStatus ? 'none' : 'line-through'},
+          ]}>
+          {props.t.task}
+        </Text>
+        <Text>{props.t.note}</Text>
       </View>
       <CheckBox
         disabled={false}
-        value={toggleCheckBox}
-        onValueChange={newValue => setToggleCheckBox(newValue)}
+        value={noteStatus}
+        onValueChange={newValue => setNoteStatus(newValue)}
         tintColors={{true: '#5886FE', false: '#C8C8C8'}}
       />
     </View>
